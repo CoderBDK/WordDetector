@@ -5,5 +5,6 @@ data class WordDetectState(
     val filteredText: String = "",
     val highlightedWords: List<HighlightWord> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val detectionMode: WordDetectionMode = WordDetectionMode.HIGHLIGHT_WORDS
 )

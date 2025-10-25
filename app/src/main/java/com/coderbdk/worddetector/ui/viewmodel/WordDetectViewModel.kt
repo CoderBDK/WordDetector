@@ -1,4 +1,4 @@
-package com.coderbdk.worddetector.ui.screen
+package com.coderbdk.worddetector.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.coderbdk.worddetector.ui.model.HighlightWord
@@ -7,10 +7,11 @@ import com.coderbdk.worddetector.ui.model.WordDetectState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class WordDetectViewModel : ViewModel() {
 
-    private val badWords = listOf("a")
+    private val badWords = listOf("")
 
     private val _highlightWords = mutableListOf<String>()
 
@@ -36,6 +37,14 @@ class WordDetectViewModel : ViewModel() {
 
             WordDetectIntent.ClearAll -> {
                 _state.value = WordDetectState()
+            }
+
+            is WordDetectIntent.ChangeDetectionMode -> {
+                _state.update {
+                    it.copy(
+                        detectionMode = intent.mode
+                    )
+                }
             }
         }
     }
