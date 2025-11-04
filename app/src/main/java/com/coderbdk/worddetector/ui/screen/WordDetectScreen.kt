@@ -32,6 +32,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -69,6 +71,10 @@ fun WordDetectScreen(viewModel: WordDetectViewModel = viewModel()) {
     val state by viewModel.state.collectAsState()
     var contentState by remember { mutableStateOf(WordDetectContentState.DETECT_CONTENT) }
 
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.loadBadWords(context)
+    }
     AnimatedContent(
         targetState = contentState
     ) {
@@ -97,7 +103,7 @@ fun WordDetectContent(
     onChangeResultContentState: () -> Unit
 ) {
 
-    var input by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf(state.inputText) }
     var customHighlight by remember { mutableStateOf("") }
 
     Column(
